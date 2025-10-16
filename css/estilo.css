@@ -1,0 +1,226 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+header{
+    color: black;
+    font-size: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #F3F5C4;
+    padding: 15px 40px;
+    width: 100%;
+
+}
+html, body{
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: #DDF0C7 ;
+    font-family: Arial, sans-serif;
+    
+    
+}
+body.img{
+    display: flex;
+    justify-content: center;
+    padding: 90px;
+    margin: auto;
+}
+.titulo{
+    font-size: 28px;
+    font-weight: bold;
+    text-decoration: none;
+    margin: 0;
+
+}
+.titulo a{
+    color: black;
+    text-decoration: none;
+}
+.titulo a:hover{
+    color: #595B19;
+    transform: scale(1.05);
+    cursor: pointer;
+}
+.menu{
+    display: flex;
+    gap: 40px ;
+}
+.menu a{
+    background-color: #DDF0C7;
+    text-decoration: none;
+    color: black;   
+    font-size: 18px;
+    font-weight: 600;
+    padding: 6px 15px;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+.menu a:hover{
+    background-color: #c7e0af;
+}
+.container {
+    background-color: #595B19;
+    color: white;
+    text-align: center;
+    width: 100%; 
+    box-sizing: border-box; 
+    padding: 8px 0;
+    font-size: 15px;
+    letter-spacing: 1px;
+    }
+.productos{
+    display: flex;
+    gap: 60px;
+        
+}
+.producto img{
+    width: 300px;
+    height: auto;
+    border-radius: 2px;
+}
+main{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 60px;
+    padding: 40px;
+    flex: 1;
+}
+.boton{
+    background-color: white;
+    color: black;
+    font-weight: bold;
+    
+    text-align: center;
+    padding: 8px 15px;
+    border-radius: 20px;
+    width: fit-content;
+    margin: 15px auto 0 auto;
+}
+.contacto-container{
+    background-color: #DDF0C7;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 50px 0;
+    flex: 1;
+}
+.form-contacto{
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    gap: 15px;
+}
+.form label{
+    font-weight: bold;
+    color: #222;    
+    margin-top: 5px;
+}
+.form-contacto input, 
+.form-contacto textarea{
+    border: 2px solid #595B19;
+    border-radius: 15px;
+    padding: 8px 12px;
+    font-family: inherit;
+    resize: none;
+    background-color: #F3F5C4;
+}
+.form-contacto input:focus,
+.form-contacto textarea:focus {
+  outline: none;
+  border-color: #878A3A;
+  background-color: #FAFBE4;
+}
+.form-contacto button {
+    margin-top: 15px;
+    background-color: #595B19;
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 10px 0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .form-contacto button:hover {
+    background-color: #878A3A;
+  }
+.detalle-producto{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 50px 40px;
+    gap: 60px;
+    flex: 1;
+    width: 100%;
+    background-color: #DDF0C7;
+    
+}
+.producto{
+    width: 250px;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.producto img:hover{
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.detalle-producto{
+    background-color: #DDF0C7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px ;
+    padding: 50px;
+
+
+}
+.detalle-producto img{
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.info-producto{
+    max-width: 400px;
+}
+.info-producto h2{
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+.info-producto p{
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+.boton-volver , .boton-agregar{
+    background-color: #595B19;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+.boton-volver:hover, .boton-agregar:hover{
+    background-color: #878A3A;
+    transform: scale(1.05);
+}
+.botones-producto{
+    display: flex;
+    gap: 15px;
+    }
+
+footer{
+    background-color: #595B19;
+    color: white;
+    text-align: left;
+    padding: 15px 30px;
+    font-size: 14px;
+    line-height: 1.5;
+}
