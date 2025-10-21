@@ -16,8 +16,10 @@
     </h1>
         <nav class="menu">
         <a href="mujeres.html">Mujeres</a>
-        <a href="hombres.html">Hombres</a>      
+        <a href="hombres.html">Hombres</a>    
+        <a href="promociones.html">Promociones</a>  
         <a href="contacto.html">Contacto</a>
+        <a href="carrito.html">Carrito </a>
     </nav>
     </header>
 
@@ -29,9 +31,12 @@
       <p><strong>Precio:</strong> $130.000</p>
 
       <div class="botones-producto">
-      <button class="boton-agregar">Agregar al Carrito</button>
-      <button class="boton-volver" onclick="window.location.href='mujeres.html'">Volver</button>
+        <button class="boton-agregar" onclick="agregarAlCarrito('Reloj Rosegold0013', 195000)">
+          Agregar al Carrito
+        </button>
+        <button class="boton-volver" onclick="window.location.href='mujeres.html'">Volver</button>
       </div>
+      
     </div>
     </main>
     <footer>
@@ -40,5 +45,7 @@
         <p>© 2024 Timora. Todos los derechos reservados.</p>
         
     </footer>
+    <script src="promociones.js"></script>
+
 </body>
 </html>

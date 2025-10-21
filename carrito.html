@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body class="carrito">
+    <header>
+        <h1 class="titulo"><a href="index.html">Timora</a></h1>
+        <nav class="menu">
+          <a href="mujeres.html">Mujeres</a>
+          <a href="hombres.html">Hombres</a>
+          <a href="promociones.html">Promociones</a>
+          <a href="contacto.html">Contacto</a>
+        </nav>
+      </header>
+    
+      <main class="carrito">
+        <h2>🛒 Tu Carrito</h2>
+        <table id="tabla-carrito">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Subtotal</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+    
+        <div class="totales">
+          <p><strong>Total sin descuento:</strong> $<span id="total-sin-descuento">0</span></p>
+          <p><strong>Descuento (10%):</strong> $<span id="descuento">0</span></p>
+          <p><strong>Total final con ahorro:</strong> $<span id="total-final">0</span></p>
+        </div>
+    
+        <div class="acciones">
+          <button id="vaciar-carrito">Vaciar Carrito</button>
+          <button onclick="window.location.href='index.html'">Seguir comprando</button>
+        </div>
+      </main>
+    
+      <footer>
+        <p>Telefono de contacto: 0000-0000 | 00-0000-0000</p>
+        <p>Correo electrónico: timora@gmail.com.ar</p>
+        <p>© 2024 Timora. Todos los derechos reservados.</p>
+      </footer>
+    
+      <script src="promociones.js"></script>
+</body>
+</html>
