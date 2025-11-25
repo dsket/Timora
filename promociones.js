@@ -1,22 +1,23 @@
-
+// Cargar carrito desde el almacenamiento local
 let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
-// funciones
 
-/**
- * Agrega un producto al carrito 
- * @param {string} nombre - Nombre del producto.
- * @param {number} precio - Precio unitario del producto.
- */
+// Colores 
+const ESTILO_TIMORA = {
+    confirmButtonColor: '#8d9e3e', 
+    background: '#F3F5C4',         
+    color: '#333333',              
+    iconColor: '#8d9e3e'           
+};
+
+// 1. FUNCIONES
+
 function agregarAlCarrito(nombre, precio) {
-    
     const productoExistente = carrito.find(producto => producto.nombre === nombre);
 
     if (productoExistente) {
-        
         productoExistente.cantidad++;
     } else {
-        
         carrito.push({
             nombre: nombre,
             precio: precio,
@@ -24,75 +25,91 @@ function agregarAlCarrito(nombre, precio) {
         });
     }
 
-    
     guardarCarrito();
-    
-   
-    alert(`"${nombre}" se ha agregado al carrito.`);
-}
 
+    // ALERTA PERSONALIZADA
+    Swal.fire({
+        ...ESTILO_TIMORA,
+        title: '¡Excelente elección!',
+        text: `Has agregado "${nombre}" al carrito.`,
+        icon: 'success',
+        confirmButtonText: 'Seguir comprando',
+        showCancelButton: true,
+        cancelButtonText: 'Ir al Carrito',
+        cancelButtonColor: '#555'
+    }).then((result) => {
+        // Si el usuario toca "Ir al Carrito"
+        if (result.dismiss === Swal.DismissReason.cancel) {
+            window.location.href = 'carrito.html';
+        }
+    });
+}
 
 function guardarCarrito() {
     localStorage.setItem('carrito', JSON.stringify(carrito));
 }
 
-/**
- * Elimina un producto del carrito.
- * @param {string} nombre - Nombre del producto a eliminar.
- */
 function eliminarProducto(nombre) {
-    
+    // ALERTA DE CONFIRMACIÓN
     carrito = carrito.filter(producto => producto.nombre !== nombre);
     guardarCarrito();
-    
     renderizarCarrito();
+    
+    // Notificación en la esquina 
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#f9f9eb',
+        color: '#333'
+    });
+    
+    Toast.fire({
+        icon: 'warning',
+        iconColor: 'orange',
+        title: `Eliminaste "${nombre}"`
+    });
 }
-
 
 function vaciarCarrito() {
-    carrito = [];
-    guardarCarrito();
-    renderizarCarrito();
-    alert('El carrito ha sido vaciado.');
+    // PREGUNTA ANTES DE VACIAR
+    Swal.fire({
+        ...ESTILO_TIMORA,
+        title: '¿Estás seguro?',
+        text: "Se eliminarán todos los productos de tu carrito.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, vaciar',
+        cancelButtonText: 'Cancelar',
+        cancelButtonColor: '#d33'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            carrito = [];
+            guardarCarrito();
+            renderizarCarrito();
+            
+            Swal.fire({
+                ...ESTILO_TIMORA,
+                title: '¡Carrito vacío!',
+                text: 'Has eliminado todos los productos.',
+                icon: 'success'
+            });
+        }
+    });
 }
 
-
-
-
-/**
- * Realiza los cálculos de los totales y descuentos.
- * Requisito: El sistema calculará automáticamente (b. i, ii, iii)
- * @returns {object} Un objeto con los totales calculados.
- */
-function calcularTotales() {
-   
-    const PORCENTAJE_DESCUENTO = 0.10; // 10%
-    
-    
-    const totalSinDescuento = carrito.reduce((acumulado, producto) => {
-        return acumulado + (producto.precio * producto.cantidad);
-    }, 0); 
-    
-    
-    const descuentoAplicado = totalSinDescuento * PORCENTAJE_DESCUENTO;
-    const totalFinal = totalSinDescuento - descuentoAplicado;
-    
-    return {
-        totalSinDescuento: totalSinDescuento,
-        descuentoAplicado: descuentoAplicado,
-        totalFinal: totalFinal
-    };
-}
-
-/**
- * Actualiza la cantidad de un producto.
- * @param {string} nombre - Nombre del producto.
- * @param {number} nuevaCantidad - La nueva cantidad.
- */
 function actualizarCantidad(nombre, nuevaCantidad) {
     const cantidadNumerica = parseInt(nuevaCantidad);
     if (isNaN(cantidadNumerica) || cantidadNumerica < 1) {
-        alert("La cantidad debe ser un número mayor a cero.");
+        // ALERTA DE ERROR
+        Swal.fire({
+            ...ESTILO_TIMORA,
+            title: 'Ups...',
+            text: "La cantidad mínima debe ser 1 unidad.",
+            icon: 'error'
+        });
         renderizarCarrito(); 
         return;
     }
@@ -105,20 +122,73 @@ function actualizarCantidad(nombre, nuevaCantidad) {
     }
 }
 
-function renderizarCarrito() {
+// 2PROMOCIONES
+
+function esRelojMujer(nombre) {
+    const nombreLower = nombre.toLowerCase();
+    return nombreLower.includes('mujer') || nombreLower.includes('dama') || nombreLower.includes('femenino');
+}
+
+function calcularTotales() {
+    let totalSinDescuento = 0;
     
+    carrito.forEach(prod => {
+        totalSinDescuento += prod.precio * prod.cantidad;
+    });
+
+    // A. Promo Mujeres (20% OFF)
+    let descuentoMujeres = 0;
+    carrito.forEach(prod => {
+        if (esRelojMujer(prod.nombre)) {
+            descuentoMujeres += (prod.precio * prod.cantidad) * 0.20;
+        }
+    });
+
+    // B. Promo 2da Unidad (50% OFF)
+    let preciosUnitarios = [];
+    carrito.forEach(prod => {
+        for (let i = 0; i < prod.cantidad; i++) {
+            preciosUnitarios.push(prod.precio);
+        }
+    });
+
+    preciosUnitarios.sort((a, b) => b - a);
+
+    let descuentoSegundaUnidad = 0;
+    for (let i = 0; i < preciosUnitarios.length; i++) {
+        if (i % 2 !== 0) { 
+            descuentoSegundaUnidad += preciosUnitarios[i] * 0.50;
+        }
+    }
+
+    const descuentoAplicado = Math.max(descuentoMujeres, descuentoSegundaUnidad);
+    const totalFinal = totalSinDescuento - descuentoAplicado;
+    const esEnvioGratis = totalFinal > 120000;
+
+    return {
+        totalSinDescuento,
+        descuentoAplicado,
+        totalFinal,
+        esEnvioGratis
+    };
+}
+
+// 3 RENDERIZADO
+
+function renderizarCarrito() {
     const tablaCuerpo = document.querySelector('#tabla-carrito tbody');
     if (!tablaCuerpo) return; 
 
     tablaCuerpo.innerHTML = ''; 
 
-
     carrito.forEach(producto => {
         const fila = document.createElement('tr');
         const subtotal = producto.precio * producto.cantidad;
+        
+        const textoExtra = esRelojMujer(producto.nombre) ? ' <span style="color:#d63384; font-size:0.8rem;">(Promo Mujer)</span>' : '';
 
         fila.innerHTML = `
-            <td>${producto.nombre}</td>
+            <td>${producto.nombre}${textoExtra}</td>
             <td>$${producto.precio.toLocaleString('es-AR')}</td>
             <td>
                 <input 
@@ -126,37 +196,47 @@ function renderizarCarrito() {
                     value="${producto.cantidad}" 
                     min="1" 
                     onchange="actualizarCantidad('${producto.nombre}', this.value)"
+                    style="width: 50px; text-align: center;"
                 >
             </td>
             <td>$${subtotal.toLocaleString('es-AR')}</td>
             <td>
-                <button onclick="eliminarProducto('${producto.nombre}')">Eliminar</button>
+                <button onclick="eliminarProducto('${producto.nombre}')" style="color: red; cursor: pointer; border:none; background:none; font-weight:bold;">X</button>
             </td>
         `;
         tablaCuerpo.appendChild(fila);
     });
 
-    
     const totales = calcularTotales();
 
-    document.getElementById('total-sin-descuento').textContent = totales.totalSinDescuento.toLocaleString('es-AR');
-    document.getElementById('descuento').textContent = totales.descuentoAplicado.toLocaleString('es-AR');
-    document.getElementById('total-final').textContent = totales.totalFinal.toLocaleString('es-AR');
-}
+    const elSubtotal = document.getElementById('total-sin-descuento');
+    const elDescuento = document.getElementById('descuento');
+    const elTotal = document.getElementById('total-final');
+    const elEnvio = document.getElementById('mensaje-envio');
 
-
-document.addEventListener('DOMContentLoaded', () => {
+    if(elSubtotal) elSubtotal.textContent = totales.totalSinDescuento.toLocaleString('es-AR');
+    if(elDescuento) elDescuento.textContent = totales.descuentoAplicado.toLocaleString('es-AR');
+    if(elTotal) elTotal.textContent = totales.totalFinal.toLocaleString('es-AR');
     
-    if (document.body.classList.contains('carrito')) {
-        renderizarCarrito();
-        
-      
-        const botonVaciar = document.getElementById('vaciar-carrito');
-        if (botonVaciar) {
-            botonVaciar.addEventListener('click', vaciarCarrito);
+    if(elEnvio) {
+        if(totales.esEnvioGratis) {
+            elEnvio.textContent = "¡GRATIS!";
+            elEnvio.style.color = "green";
+            elEnvio.style.fontWeight = "bold";
+        } else {
+            elEnvio.textContent = "$5.000 (Falta poco para envío gratis)";
+            elEnvio.style.color = "black";
+            elEnvio.style.fontWeight = "normal";
         }
     }
+}
+
+// Inicialización
+document.addEventListener('DOMContentLoaded', () => {
+    renderizarCarrito();
     
-   
-}); 
-  
+    const botonVaciar = document.getElementById('vaciar-carrito');
+    if (botonVaciar) {
+        botonVaciar.addEventListener('click', vaciarCarrito);
+    }
+});
