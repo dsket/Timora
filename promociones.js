@@ -38,7 +38,7 @@ function agregarAlCarrito(nombre, precio) {
         cancelButtonText: 'Ir al Carrito',
         cancelButtonColor: '#555'
     }).then((result) => {
-        // Si el usuario toca "Ir al Carrito"
+        // "Ir al Carrito"
         if (result.dismiss === Swal.DismissReason.cancel) {
             window.location.href = 'carrito.html';
         }

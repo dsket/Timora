@@ -264,7 +264,8 @@ main{
     background-color: #DDF0C7;
     text-align: center;
     padding: 50px 20px;
-    min-height: 70vh;
+    height: auto;
+    width: 100%;
     
   }
   .carrito h2 {
@@ -273,15 +274,22 @@ main{
     color: #333;
   }
   
+  .tabla-scroll {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 20px;
+  }
   #tabla-carrito {
-    width: 80%;
+    width: 100%;
     margin: 20px auto;
-    border-collapse: collapse;
+    min-width: 600px;
+    
   }
   
   #tabla-carrito th, #tabla-carrito td {
     border: 1px solid #ccc;
     padding: 10px;
+    flex-direction: column;
   }
   
   #tabla-carrito th {
@@ -300,10 +308,12 @@ main{
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 .totales p {
-    margin: 10px 0;
-    font-size: 1rem;
+    
+    
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    gap: 10px;
 }
 #total-final{
     font-size: 1.4rem;
@@ -485,9 +495,24 @@ footer{
         width: 95%; 
         max-width: 400px;
     }
+    
 
     footer {
         text-align: center; 
         padding: 15px 10px;
     }
+    #tabla-carrito th, #tabla-carrito td{
+        font-size: 12px;
+        padding: 5px;
+    }
+    .totales {
+        width: 95%;
+        padding: 15px;
+    }
+   .totales p {
+        font-size: 14px;
+    }
+    
+ 
+
 }
